@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <title>Buy</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/book.css')}}" />
+</head>
+
+<body>
+    <div class="row">
+        <div class="dash">
+            <div class="profile">
+                <img class="myprofile" src="{{url_for('static',filename='img/myAvatar.png')}}" />
+                <h3>{{user}}</h3>
+            </div>
+            <div class="menu">
+                <h3><a href="#" onclick="history.back()" style="color:black;text-decoration: none;">Back</a></h3>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="reserve">
+        <div class="myform">
+            <h3>Reserve space</h3>
+            <h5>highlighted fields must be filled</h5>
+            <form action="/reserve" method="post">
+                <label for="name"><a>*</a>full names :</label>
+                <input type="text" name="name"><br>
+                <label for="famsize">number of expected occupants:</label>
+                <input type="text" name="occupants"><br>
+                <label for="Phone"><a>*</a>phone number:</label>
+                <input type="number" name="phone_number">
+                <label for="email"><a>*</a>email:</label>
+                <input type="text" name="email"><br>
+                <label for="name"><a>*</a>date:</label>
+                <input type="date" name="date"><br>
+                <button type="submit">reserve</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

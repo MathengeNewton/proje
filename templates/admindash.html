@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="../static/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../static/assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Jamesons Property Management system
+    </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+        name='viewport' />
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <!-- CSS Files -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../static/css/paper-dashboard.css?v=2.0.0" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href=" {{url_for('static',filename='css/demo.css')}}" rel="stylesheet" />
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- datatable -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<style>
+#imagepreview{
+    width:500px;
+    height:300px;
+    padding:5%;
+}
+#output{
+    width:50%;
+    height: 70%;
+}
+</style>
+</head>
+
+<body class="">
+    <div class="wrapper ">
+        <div class="sidebar" data-color="yellow" data-active-color="danger">
+            <div class="logo">
+                <a class="simple-text logo-normal">
+                    Property Management System
+                </a>
+            </div>
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                    <li class="active">
+                        <a href="/home">
+                            <i class="fas fa-align-center"></i>
+                            <p>Upload Property</p>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/rentals/all">
+                            <i class="fas fa-align-center"></i>
+                            <p>my property Lists</p>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/rentals/status">
+                            <i class="fas fa-align-center"></i>
+                            <p>Bookings</p>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="/payments">
+                            <i class="fas fa-align-center"></i>
+                            <p>Payments</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-panel">
+            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+                <div class="container-fluid">
+                    <div class="navbar-wrapper">
+                        <div class="navbar-toggle">
+                            <button type="button" class="navbar-toggler">
+                                <span class="navbar-toggler-bar bar1"></span>
+                                <span class="navbar-toggler-bar bar2"></span>
+                                <span class="navbar-toggler-bar bar3"></span>
+                            </button>
+                        </div>
+                        <a class="navbar-brand" href="#pablo">JAMESONS PROPERTY MANAGEMENT SYSTEM </a>
+                    </div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+                        aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                        <span class="navbar-toggler-bar navbar-kebab"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                        <ul class="navbar-nav">
+
+                            <li class="nav-item">
+                                <form action="/owner/logout" method="POST">
+                                    <button type="submit" class="btn-warning">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <div class="card card-default">
+                            <div class="card-header text-center">
+                                <h5 class="card-title font-weight-bold">UPLOAD YOUR PROPERTY</h5>
+                                <div class="form-group">
+                                    {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                    {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                        <span>{{ message }}</span>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="container">
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-8">
+                                            <div class="">
+                                                <form action="/home" method="POST" enctype="multipart/form-data"
+                                                    class="shadow-md">
+                                                    <div class="col-10">                                                    
+                                                    </div>
+                                                    <div class="col-10">
+                                                        <label class="text-monospace text-danger" for="file">
+                                                            Image *</label>
+                                                        <input id="file" name="file" type="file"  onchange="loadFile(event)"
+                                                            class="form-control border" accept="image/*">     
+                                                    </div>
+                                                    <div class="imagepreview" id="imagepreview">
+                                                        <img id="output" alt="" />
+                                                    </div>
+                                                    <div class="form-group col-10">
+                                                        <label class="text-monospace text-danger"
+                                                            for="location">LOCATION
+                                                            *</label>
+                                                        <input required id="pname" name="location"
+                                                            class="form-control border" type="text">
+                                                    </div>
+                                                    <div class="form-group col-10">
+                                                        <label class="text-monospace text-danger" for="description">
+                                                            Description *</label>
+                                                        <textarea required id="description" name="description"
+                                                            class="form-control border" cols="30" rows="5"></textarea>
+                                                    </div>
+                                                    <div class="form-group col-10">
+                                                        <label for="bid" class="text-monospace text-danger">PRICE
+                                                            *</label>
+                                                        <input required id="bid" name="price" type="number"
+                                                            class="form-control border">
+                                                    </div>
+                                                    <div class="form-group col-10">
+                                                        <label for="bid" class="text-monospace text-danger">HOUSE TYPE
+                                                            *</label>
+                                                        <select id="bid" name="housetype" type="text"
+                                                            class="form-control border" style="font-size: small;">
+                                                            <option value="mansion">mansion</option>
+                                                            <option value="bungallow">bungallow</option>
+                                                            <option value="apartment">apartment</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-10">
+                                                        <label for="bid" class="text-monospace text-danger">CATEGORY
+                                                            *</label>
+                                                        <select id="bid" name="category" type="text"
+                                                            class="form-control border" style="font-size: small;">
+                                                            <option value="rental">Rental</option>
+                                                            <option value="sale">Sale</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button type="submit"
+                                                            class="btn btn-outline-success">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+    <!--   Core JS Files   -->
+    <script src="../static/js/jquery.min.js"></script>
+    <script src="../static/js/popper.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <!--  Google Maps Plugin    -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+    <!-- Chart JS -->
+    <script src="../static/js/plugins/chartjs.min.js"></script>
+    <!--  Notifications Plugin    -->
+    <script src="../static/js/plugins/bootstrap-notify.js"></script>
+    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="../static/js/paper-dashboard.min.js?v=2.0.0" type="text/javascript"></script>
+    <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+    <script src="../static/js/demo.js"></script>
+
+    <!-- datatable -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js">
+    </script>
+
+    <script>
+        var loadFile = function(event) {
+                var output = document.getElementById('output');
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.onload = function() {
+                URL.revokeObjectURL(output.src) // free memory
+                }
+            };
+                $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+
+        function SelectText(element) {
+            var doc = document,
+                text = element,
+                range, selection;
+            if (doc.body.createTextRange) {
+                range = document.body.createTextRange();
+                range.moveToElementText(text);
+                range.select();
+            } else if (window.getSelection) {
+                selection = window.getSelection();
+                range = document.createRange();
+                range.selectNodeContents(text);
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
+        window.onload = function () {
+            var iconsWrapper = document.getElementById('icons-wrapper'),
+                listItems = iconsWrapper.getElementsByTagName('li');
+            for (var i = 0; i < listItems.length; i++) {
+                listItems[i].onclick = function fun(event) {
+                    var selectedTagName = event.target.tagName.toLowerCase();
+                    if (selectedTagName == 'p' || selectedTagName == 'em') {
+                        SelectText(event.target);
+                    } else if (selectedTagName == 'input') {
+                        event.target.setSelectionRange(0, event.target.value.length);
+                    }
+                }
+
+                var beforeContentChar = window.getComputedStyle(listItems[i].getElementsByTagName('i')[0],
+                        '::before').getPropertyValue('content').replace(/'/g, "").replace(/"/g, ""),
+                    beforeContent = beforeContentChar.charCodeAt(0).toString(16);
+                var beforeContentElement = document.createElement("em");
+                beforeContentElement.textContent = "\\" + beforeContent;
+                listItems[i].appendChild(beforeContentElement);
+
+                //create input element to copy/paste chart
+                var charCharac = document.createElement('input');
+                charCharac.setAttribute('type', 'text');
+                charCharac.setAttribute('maxlength', '1');
+                charCharac.setAttribute('readonly', 'true');
+                charCharac.setAttribute('value', beforeContentChar);
+                listItems[i].appendChild(charCharac);
+            }
+        }
+    </script>
+</body>
+
+</html>
